@@ -8,7 +8,7 @@ This widget is designed for easy integration into your streaming setup without n
 
 **Your Widget's Public Browser Link:**
 
-`https://batz736.github.io/Custom-Time-Widget/`*(https://batz736.github.io/Custom-Time-Widget/*
+`https://batz736.github.io/Custom-Time-Widget/`*(https://batz736.github.io/Custom-Time-Widget/)*
 
 ---
 
