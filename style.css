@@ -185,40 +185,7 @@ body {
     background-color: #ffb300;
 }
 
-/* This section is MISSING in your current style.css */
-.shareable-link-section {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #555;
-    text-align: center;
-}
-
-.shareable-link-section h3 {
-    margin-bottom: 15px;
-    color: #90CAF9;
-}
-
-#shareable-link-display {
-    width: calc(100% - 40px); /* Adjust for padding/button */
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #555;
-    border-radius: 5px;
-    background-color: #222;
-    color: #0F0; /* Green text for link */
-    font-size: 14px;
-    box-sizing: border-box;
-    text-align: center;
-    cursor: text; /* Allow selection */
-}
-
-#copy-link-button {
-    background-color: #007bff; /* Blue for copy button */
-}
-
-#copy-link-button:hover {
-    background-color: #0056b3;
-}
+/* Styles for shareable-link-section are REMOVED from here */
 
 .hidden {
     display: none !important;
