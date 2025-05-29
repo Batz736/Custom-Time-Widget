@@ -1,0 +1,191 @@
+body {
+    margin: 0;
+    overflow: hidden; /* Hide scrollbars if widget is larger than viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* For standalone viewing */
+    background-color: transparent; /* Essential for OBS Browser Source transparent background */
+}
+
+#date-time-widget {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    position: relative; /* For the settings button */
+    box-sizing: border-box; /* Include padding/border in width/height */
+    /* Add this transition for smoother appearance */
+    transition: background-color 0.3s ease;
+}
+
+.widget-text {
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#date-display {
+    margin-bottom: 5px;
+}
+
+#time-display {
+    margin-top: 5px;
+}
+
+#settings-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 100; /* Ensure it's above other widget elements */
+    /* --- NEW/MODIFIED STYLES FOR HIDE/SHOW --- */
+    opacity: 0; /* Start hidden */
+    pointer-events: none; /* Make it unclickable when hidden */
+    transition: opacity 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+}
+
+#settings-button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Show button when hovering over the parent widget */
+#date-time-widget:hover #settings-button {
+    opacity: 1; /* Make visible */
+    pointer-events: auto; /* Make clickable */
+}
+
+/* Settings Overlay - No changes needed here, keep as is */
+#settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top of everything */
+}
+
+#settings-panel {
+    background-color: #333;
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    box-sizing: border-box;
+}
+
+#settings-panel h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #4CAF50;
+}
+
+.setting-group {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #555;
+}
+
+.setting-group:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.setting-group h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #90CAF9;
+}
+
+#settings-panel label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #E0E0E0;
+}
+
+#settings-panel input[type="number"],
+#settings-panel input[type="color"],
+#settings-panel select {
+    width: calc(100% - 20px); /* Adjust for padding */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #444;
+    color: white;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#settings-panel input[type="range"] {
+    width: calc(100% - 20px);
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+#settings-panel small {
+    display: block;
+    font-size: 0.8em;
+    color: #AAA;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.settings-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.widget-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.widget-button:hover {
+    background-color: #45a049;
+}
+
+#close-settings {
+    background-color: #f44336;
+}
+
+#close-settings:hover {
+    background-color: #da190b;
+}
+
+#reset-settings {
+    background-color: #FFC107;
+    color: #333;
+}
+#reset-settings:hover {
+    background-color: #ffb300;
+}
+
+.hidden {
+    display: none !important;
+}

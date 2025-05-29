@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Untitled</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customizable Date/Time Widget</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bayon&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    </head>
+<body>
+    <div id="date-time-widget">
+        <div id="date-display" class="widget-text"></div>
+        <div id="time-display" class="widget-text"></div>
+        <button id="settings-button" class="widget-button">⚙️ Settings</button>
+    </div>
+
+    <div id="settings-overlay" class="hidden">
+        <div id="settings-panel">
+            <h2>Widget Settings</h2>
+
+            <section class="setting-group">
+                <h3>Text Settings</h3>
+                <label for="font-family">Font Family:</label>
+                <select id="font-family">
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="Arial Black, sans-serif">Arial Black</option>
+                    <option value="Arial Bold, sans-serif">Arial Bold</option> <option value="Franklin Gothic Medium, sans-serif">Franklin Gothic</option>
+                    <option value="Showcard Gothic, cursive">Showcard Gothic</option>
+                    <option value="Bayon, sans-serif">Bayon (Web Font)</option>
+                    <option value="Montserrat, sans-serif">Montserrat (Web Font)</option>
+                    <option value="Montserrat Bold, sans-serif">Montserrat Bold (Web Font)</option>
+                    <option value="Bernard MT Condensed, sans-serif">Bernard MT</option>
+                    <option value="Cooper Black, serif">Cooper</option>
+                    <option value="Onyx, cursive">Onyx</option>
+                    <option value="Verdana, sans-serif">Verdana</option>
+                    <option value="Tahoma, sans-serif">Tahoma</option>
+                    <option value="Trebuchet MS, sans-serif">Trebuchet MS</option>
+                    <option value="Georgia, serif">Georgia</option>
+                    <option value="Times New Roman, serif">Times New Roman</option>
+                    <option value="Courier New, monospace">Courier New</option>
+                    <option value="Lucida Console, monospace">Lucida Console</option>
+                    <option value="Impact, sans-serif">Impact</option>
+                    <option value="Comic Sans MS, cursive">Comic Sans MS</option>
+                    </select>
+
+                <label for="font-size">Font Size (px):</label>
+                <input type="number" id="font-size" min="10" max="200" value="48">
+
+                <label for="text-color">Text Color:</label>
+                <input type="color" id="text-color" value="#FFFFFF">
+            </section>
+
+            <section class="setting-group">
+                <h3>Widget Size & Background</h3>
+                <label for="widget-width">Widget Width (px):</label>
+                <input type="number" id="widget-width" min="100" max="1920" value="400">
+
+                <label for="widget-height">Widget Height (px):</label>
+                <input type="number" id="widget-height" min="50" max="1080" value="150">
+
+                <label for="bg-color">Background Color:</label>
+                <input type="color" id="bg-color" value="#000000">
+
+                <label for="bg-opacity">Background Opacity (0-1):</label>
+                <input type="range" id="bg-opacity" min="0" max="1" step="0.05" value="0.7">
+            </section>
+
+            <section class="setting-group">
+                <h3>Time Zone Settings</h3>
+                <label for="timezone-select">Select Time Zone:</label>
+                <select id="timezone-select"></select>
+                <small>Select a city/region for your desired time zone.</small>
+            </section>
+
+            <div class="settings-actions">
+                <button id="save-settings" class="widget-button">Save Settings</button>
+                <button id="close-settings" class="widget-button">Close</button>
+                <button id="reset-settings" class="widget-button">Reset to Defaults</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
