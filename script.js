@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const timeDisplay = document.getElementById('time-display');
     const settingsButton = document.getElementById('settings-button');
     const settingsOverlay = document.getElementById('settings-overlay');
-    const settingsPanel = document.getElementById('settings-panel');
     const closeSettingsButton = document.getElementById('close-settings');
     const saveSettingsButton = document.getElementById('save-settings');
     const resetSettingsButton = document.getElementById('reset-settings');
@@ -19,6 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgOpacityInput = document.getElementById('bg-opacity');
     const timezoneSelect = document.getElementById('timezone-select');
 
+    // Shareable link elements (These were missing from your script.js)
+    const shareableLinkDisplay = document.getElementById('shareable-link-display');
+    const copyLinkButton = document.getElementById('copy-link-button');
+
     // Default settings
     const defaultSettings = {
         fontFamily: 'Arial, sans-serif',
@@ -31,18 +34,24 @@ document.addEventListener('DOMContentLoaded', () => {
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // User's default
     };
 
-    let currentSettings = { ...defaultSettings }; // Start with defaults
+    let currentSettings = { ...defaultSettings };
 
-    // Function to populate time zones
+    // --- Helper Functions ---
+
     function populateTimezones() {
         const timezones = Intl.supportedValuesOf('timeZone');
-        // Sort timezones for easier navigation
         timezones.sort((a, b) => a.localeCompare(b));
 
+        const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const localOption = document.createElement('option');
+        localOption.value = localTimezone;
+        localOption.textContent = `Local Time (${localTimezone})`;
+        timezoneSelect.appendChild(localOption);
+
         timezones.forEach(zone => {
+            if (zone === localTimezone) return;
             const option = document.createElement('option');
             option.value = zone;
-            // Display a more readable format if possible (e.g., 'America/New_York' -> 'New York (America)')
             try {
                 const now = new Date();
                 const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
@@ -53,14 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const timeZoneNamePart = parts.find(p => p.type === 'timeZoneName');
                 option.textContent = `${zone} (${timeZoneNamePart ? timeZoneNamePart.value : ''})`;
             } catch (e) {
-                // Fallback if parsing fails for some rare zones
                 option.textContent = zone;
             }
             timezoneSelect.appendChild(option);
         });
     }
 
-    // Function to apply settings to the widget
     function applySettings(settings) {
         // Apply text styles
         dateDisplay.style.fontFamily = settings.fontFamily;
@@ -78,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dateTimeWidget.style.backgroundColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${settings.bgOpacity})`;
         }
 
-        // Set values in settings panel
+        // Set values in settings panel inputs (for UI consistency)
         fontFamilySelect.value = settings.fontFamily;
         fontSizeInput.value = settings.fontSize;
         textColorInput.value = settings.textColor;
@@ -86,26 +93,78 @@ document.addEventListener('DOMContentLoaded', () => {
         widgetHeightInput.value = settings.widgetHeight;
         bgColorInput.value = settings.bgColor;
         bgOpacityInput.value = settings.bgOpacity;
-        timezoneSelect.value = settings.timeZone; // Make sure this matches an option value
+
+        // Ensure timezone setting is valid for the select element
+        if (Array.from(timezoneSelect.options).some(option => option.value === settings.timeZone)) {
+            timezoneSelect.value = settings.timeZone;
+        } else {
+            timezoneSelect.value = Intl.DateTimeFormat().resolvedOptions().timeZone; // Fallback to local
+            settings.timeZone = timezoneSelect.value; // Update settings object to reflect actual applied value
+        }
     }
 
-    // Function to load settings from localStorage
-    function loadSettings() {
-        const savedSettings = localStorage.getItem('dateTimeWidgetSettings');
-        if (savedSettings) {
-            try {
-                currentSettings = JSON.parse(savedSettings);
-                // Ensure all default keys exist if new settings are added later
-                currentSettings = { ...defaultSettings, ...currentSettings };
-            } catch (e) {
-                console.error("Error parsing saved settings, loading defaults.", e);
-                currentSettings = { ...defaultSettings };
+    // New: Convert settings object to URL query string
+    function settingsToQueryString(settings) {
+        const params = new URLSearchParams();
+        for (const key in settings) {
+            params.append(key, encodeURIComponent(settings[key]));
+        }
+        return params.toString();
+    }
+
+    // New: Convert URL query string to settings object
+    function queryStringToSettings(queryString) {
+        const params = new URLSearchParams(queryString);
+        const settings = {};
+        for (const [key, value] of params.entries()) {
+            settings[key] = decodeURIComponent(value);
+            if (key === 'fontSize' || key === 'widgetWidth' || key === 'widgetHeight') {
+                settings[key] = parseInt(settings[key], 10);
+            } else if (key === 'bgOpacity') {
+                settings[key] = parseFloat(settings[key]);
             }
         }
-        applySettings(currentSettings);
+        return settings;
     }
 
-    // Function to save settings to localStorage
+    // New: Get current URL and append/replace query string
+    function updateUrlWithSettings(settings) {
+        const currentUrl = new URL(window.location.href);
+        const queryString = settingsToQueryString(settings);
+        currentUrl.search = queryString;
+        return currentUrl.toString();
+    }
+
+    // Modified: Function to load settings (prioritizes URL, then localStorage, then defaults)
+    function loadSettings() {
+        let loadedSettings = {};
+        const urlParams = new URLSearchParams(window.location.search);
+
+        if (urlParams.toString()) { // Check if URL has any parameters
+            loadedSettings = queryStringToSettings(urlParams.toString());
+            // If URL parameters are present, prioritize them and clear localStorage
+            localStorage.removeItem('dateTimeWidgetSettings');
+        } else {
+            const savedSettings = localStorage.getItem('dateTimeWidgetSettings');
+            if (savedSettings) {
+                try {
+                    loadedSettings = JSON.parse(savedSettings);
+                } catch (e) {
+                    console.error("Error parsing saved settings from localStorage, loading defaults.", e);
+                    loadedSettings = {};
+                }
+            }
+        }
+
+        currentSettings = { ...defaultSettings, ...loadedSettings };
+        applySettings(currentSettings);
+        // This ensures the shareable link display is updated on initial load
+        if (shareableLinkDisplay) {
+            shareableLinkDisplay.value = updateUrlWithSettings(currentSettings);
+        }
+    }
+
+    // Modified: Function to save settings to localStorage AND update URL
     function saveSettings() {
         currentSettings = {
             fontFamily: fontFamilySelect.value,
@@ -117,27 +176,48 @@ document.addEventListener('DOMContentLoaded', () => {
             bgOpacity: parseFloat(bgOpacityInput.value),
             timeZone: timezoneSelect.value,
         };
+
+        // Save to localStorage (as a fallback/initial state if URL is cleared manually)
         localStorage.setItem('dateTimeWidgetSettings', JSON.stringify(currentSettings));
+
+        // Update the URL to include current settings
+        const newUrl = updateUrlWithSettings(currentSettings);
+        // history.pushState updates the URL bar without reloading the page.
+        // It only works on URLs with a valid origin (not file://).
+        history.pushState(currentSettings, '', newUrl);
+
+        if (shareableLinkDisplay) { // Update shareable link display
+            shareableLinkDisplay.value = newUrl;
+        }
         applySettings(currentSettings); // Re-apply to ensure immediate visual update
     }
 
-    // Function to reset settings to default
+    // Modified: Function to reset settings to default
     function resetToDefaults() {
-        currentSettings = { ...defaultSettings };
-        localStorage.removeItem('dateTimeWidgetSettings'); // Clear saved settings
-        applySettings(currentSettings);
-        // Also update the UI elements to reflect defaults
-        fontFamilySelect.value = defaultSettings.fontFamily;
-        fontSizeInput.value = defaultSettings.fontSize;
-        textColorInput.value = defaultSettings.textColor;
-        widgetWidthInput.value = defaultSettings.widgetWidth;
-        widgetHeightInput.value = defaultSettings.widgetHeight;
-        bgColorInput.value = defaultSettings.bgColor;
-        bgOpacityInput.value = defaultSettings.bgOpacity;
-        timezoneSelect.value = defaultSettings.timeZone;
+        if (confirm("Are you sure you want to reset all settings to their default values?")) {
+            currentSettings = { ...defaultSettings };
+            localStorage.removeItem('dateTimeWidgetSettings'); // Clear saved settings
+
+            // Update URL to remove all parameters, effectively resetting via URL
+            const cleanUrl = window.location.origin + window.location.pathname;
+            history.pushState(defaultSettings, '', cleanUrl);
+
+            applySettings(currentSettings);
+            // Also update the UI elements to reflect defaults
+            fontFamilySelect.value = defaultSettings.fontFamily;
+            fontSizeInput.value = defaultSettings.fontSize;
+            textColorInput.value = defaultSettings.textColor;
+            widgetWidthInput.value = defaultSettings.widgetWidth;
+            widgetHeightInput.value = defaultSettings.widgetHeight;
+            bgColorInput.value = defaultSettings.bgColor;
+            bgOpacityInput.value = defaultSettings.bgOpacity;
+            timezoneSelect.value = defaultSettings.timeZone;
+            if (shareableLinkDisplay) { // Clear display in the settings panel
+                shareableLinkDisplay.value = cleanUrl;
+            }
+        }
     }
 
-    // Function to update the date and time display
     function updateDateTime() {
         const now = new Date();
         const optionsDate = {
@@ -151,11 +231,10 @@ document.addEventListener('DOMContentLoaded', () => {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit',
-            hour12: true, // You can make this configurable too
+            hour12: true,
             timeZone: currentSettings.timeZone,
         };
 
-        // Format according to selected time zone
         const dateString = now.toLocaleDateString(undefined, optionsDate);
         const timeString = now.toLocaleTimeString(undefined, optionsTime);
 
@@ -163,7 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
         timeDisplay.textContent = timeString;
     }
 
-    // Helper to convert hex to RGB for rgba background
     function hexToRgb(hex) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? {
@@ -173,42 +251,50 @@ document.addEventListener('DOMContentLoaded', () => {
         } : null;
     }
 
-    // Event Listeners
-    settingsButton.addEventListener('click', () => {
+    // --- Event Listeners ---
+
+    // Using optional chaining or checking for existence just in case, though they should exist now.
+    settingsButton?.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent default <a> tag navigation
+        applySettings(currentSettings); // Load current settings into panel fields
+        if (shareableLinkDisplay) {
+            shareableLinkDisplay.value = updateUrlWithSettings(currentSettings); // Update shareable link display
+        }
         settingsOverlay.classList.remove('hidden');
     });
 
-    closeSettingsButton.addEventListener('click', () => {
+    closeSettingsButton?.addEventListener('click', () => {
         settingsOverlay.classList.add('hidden');
-        loadSettings(); // Reload settings to discard unsaved changes
+        // No need to loadSettings() here, as settings are updated on save
+        // If user closes without saving, the URL/localStorage state remains as is.
     });
 
-    saveSettingsButton.addEventListener('click', () => {
+    saveSettingsButton?.addEventListener('click', () => {
         saveSettings();
         settingsOverlay.classList.add('hidden');
     });
 
-    resetSettingsButton.addEventListener('click', () => {
-        if (confirm("Are you sure you want to reset all settings to their default values?")) {
-            resetToDefaults();
-            // No need to close, let user see defaults are applied to inputs
+    resetSettingsButton?.addEventListener('click', resetToDefaults);
+
+    // New: Copy link button event listener
+    copyLinkButton?.addEventListener('click', () => {
+        shareableLinkDisplay.select();
+        shareableLinkDisplay.setSelectionRange(0, 99999); // For mobile devices
+        try {
+            document.execCommand('copy');
+            alert("Link copied to clipboard!");
+        } catch (err) {
+            console.error('Failed to copy text:', err);
+            alert("Failed to copy link. Please copy it manually from the field.");
         }
     });
 
-    // Initialize
+    // --- Initialization ---
+
     populateTimezones();
-    loadSettings(); // Load and apply saved settings on start
+    loadSettings(); // Load and apply settings from URL or localStorage on start
     updateDateTime(); // Initial display
 
     // Update time every second
     setInterval(updateDateTime, 1000);
-
-    // Optional: Hide settings button if in OBS (or if you want to make it always hidden)
-    // You'd typically set this in OBS CSS or use a query parameter in the URL.
-    // For OBS, you can right-click the browser source -> Interact, to open settings.
-    // If you want to hide the button for the 'live' widget, you can add this:
-    // const urlParams = new URLSearchParams(window.location.search);
-    // if (urlParams.get('mode') === 'widget') { // e.g., if you load with widget.html?mode=widget
-    //     settingsButton.style.display = 'none';
-    // }
 });
