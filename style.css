@@ -18,8 +18,7 @@ body {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     position: relative; /* For the settings button */
     box-sizing: border-box; /* Include padding/border in width/height */
-    /* Add this transition for smoother appearance */
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease; /* For smoother background changes */
 }
 
 .widget-text {
@@ -46,8 +45,8 @@ body {
     padding: 5px 8px;
     cursor: pointer;
     font-size: 16px;
+    text-decoration: none; /* Remove underline from <a> tag */
     z-index: 100; /* Ensure it's above other widget elements */
-    /* --- NEW/MODIFIED STYLES FOR HIDE/SHOW --- */
     opacity: 0; /* Start hidden */
     pointer-events: none; /* Make it unclickable when hidden */
     transition: opacity 0.3s ease, background-color 0.3s ease; /* Smooth transition */
@@ -63,7 +62,7 @@ body {
     pointer-events: auto; /* Make clickable */
 }
 
-/* Settings Overlay - No changes needed here, keep as is */
+/* Settings Overlay */
 #settings-overlay {
     position: fixed;
     top: 0;
@@ -184,6 +183,41 @@ body {
 }
 #reset-settings:hover {
     background-color: #ffb300;
+}
+
+/* This section is MISSING in your current style.css */
+.shareable-link-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #555;
+    text-align: center;
+}
+
+.shareable-link-section h3 {
+    margin-bottom: 15px;
+    color: #90CAF9;
+}
+
+#shareable-link-display {
+    width: calc(100% - 40px); /* Adjust for padding/button */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #222;
+    color: #0F0; /* Green text for link */
+    font-size: 14px;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: text; /* Allow selection */
+}
+
+#copy-link-button {
+    background-color: #007bff; /* Blue for copy button */
+}
+
+#copy-link-button:hover {
+    background-color: #0056b3;
 }
 
 .hidden {
