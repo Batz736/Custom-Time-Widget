@@ -18,9 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgOpacityInput = document.getElementById('bg-opacity');
     const timezoneSelect = document.getElementById('timezone-select');
 
-    // Shareable link elements (These were missing from your script.js)
-    const shareableLinkDisplay = document.getElementById('shareable-link-display');
-    const copyLinkButton = document.getElementById('copy-link-button');
+    // REMOVED: shareableLinkDisplay and copyLinkButton variables
 
     // Default settings
     const defaultSettings = {
@@ -103,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // New: Convert settings object to URL query string
+    // Convert settings object to URL query string
     function settingsToQueryString(settings) {
         const params = new URLSearchParams();
         for (const key in settings) {
@@ -112,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return params.toString();
     }
 
-    // New: Convert URL query string to settings object
+    // Convert URL query string to settings object
     function queryStringToSettings(queryString) {
         const params = new URLSearchParams(queryString);
         const settings = {};
@@ -127,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return settings;
     }
 
-    // New: Get current URL and append/replace query string
+    // Get current URL and append/replace query string
     function updateUrlWithSettings(settings) {
         const currentUrl = new URL(window.location.href);
         const queryString = settingsToQueryString(settings);
@@ -158,10 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         currentSettings = { ...defaultSettings, ...loadedSettings };
         applySettings(currentSettings);
-        // This ensures the shareable link display is updated on initial load
-        if (shareableLinkDisplay) {
-            shareableLinkDisplay.value = updateUrlWithSettings(currentSettings);
-        }
+        // REMOVED: shareableLinkDisplay.value update here
     }
 
     // Modified: Function to save settings to localStorage AND update URL
@@ -186,9 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // It only works on URLs with a valid origin (not file://).
         history.pushState(currentSettings, '', newUrl);
 
-        if (shareableLinkDisplay) { // Update shareable link display
-            shareableLinkDisplay.value = newUrl;
-        }
+        // REMOVED: shareableLinkDisplay.value update here
         applySettings(currentSettings); // Re-apply to ensure immediate visual update
     }
 
@@ -212,9 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bgColorInput.value = defaultSettings.bgColor;
             bgOpacityInput.value = defaultSettings.bgOpacity;
             timezoneSelect.value = defaultSettings.timeZone;
-            if (shareableLinkDisplay) { // Clear display in the settings panel
-                shareableLinkDisplay.value = cleanUrl;
-            }
+            // REMOVED: shareableLinkDisplay.value update here
         }
     }
 
@@ -253,20 +244,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
 
-    // Using optional chaining or checking for existence just in case, though they should exist now.
     settingsButton?.addEventListener('click', (event) => {
         event.preventDefault(); // Prevent default <a> tag navigation
         applySettings(currentSettings); // Load current settings into panel fields
-        if (shareableLinkDisplay) {
-            shareableLinkDisplay.value = updateUrlWithSettings(currentSettings); // Update shareable link display
-        }
+        // REMOVED: shareableLinkDisplay.value update here
         settingsOverlay.classList.remove('hidden');
     });
 
     closeSettingsButton?.addEventListener('click', () => {
         settingsOverlay.classList.add('hidden');
-        // No need to loadSettings() here, as settings are updated on save
-        // If user closes without saving, the URL/localStorage state remains as is.
     });
 
     saveSettingsButton?.addEventListener('click', () => {
@@ -276,18 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     resetSettingsButton?.addEventListener('click', resetToDefaults);
 
-    // New: Copy link button event listener
-    copyLinkButton?.addEventListener('click', () => {
-        shareableLinkDisplay.select();
-        shareableLinkDisplay.setSelectionRange(0, 99999); // For mobile devices
-        try {
-            document.execCommand('copy');
-            alert("Link copied to clipboard!");
-        } catch (err) {
-            console.error('Failed to copy text:', err);
-            alert("Failed to copy link. Please copy it manually from the field.");
-        }
-    });
+    // REMOVED: copyLinkButton event listener
 
     // --- Initialization ---
 
