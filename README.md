@@ -43,18 +43,48 @@ Follow these steps to integrate the widget into your streaming setup:
     * *(Optional but Recommended):* Check "Shutdown source when not active" and "Refresh browser when scene becomes active" for optimal performance.
     * Click "OK".
 
-## 🛠️ Customize Your Widget
+## 🎛️ Customize Your Widget – Step-by-Step
+Go to the Widget URL
+Open the link in your browser:
+https://batz736.github.io/Custom-Time-Widget/
 
-The widget features an integrated settings panel accessible directly from the Browser Source.
+Access Settings
+Hover your mouse over the widget to reveal the ⚙️ Settings icon, then click it.
 
-1.  In OBS Studio, right-click on your new "Stream Date/Time" (or whatever you named it) source in the "Sources" dock.
-2.  Select **"Interact"**.
-3.  A new window will open showing your widget. **Hover your mouse over the widget within this window** to make the "⚙️ Settings" button appear in the top-right corner.
-4.  Click the "⚙️ Settings" button to open the customization panel.
-5.  Adjust the various settings for font, size, colors, widget dimensions, background opacity, and time zone.
-6.  Click **"Save Settings"** to apply your changes.
-7.  Click **"Close"** to dismiss the settings panel.
-8.  Close the "Interact" window. Your widget in OBS will update instantly with your new settings!
+Customize the Look
+Adjust the following options to match your stream’s branding:
+
+Font style and size
+
+Text color
+
+Background color and opacity (for transparency)
+
+Widget width and height
+
+Time zone
+
+Save Your Settings
+Click Save Settings — your preferences will be stored automatically.
+
+Copy the Widget URL
+Use the same URL (no need to generate a new one) — your settings are saved locally and will persist.
+
+Add to Your Broadcast Software
+
+Open your broadcasting software (e.g., OBS Studio).
+
+Add a new Browser Source.
+
+Paste the widget URL.
+
+Set the desired width and height.
+
+Make sure “Local File” is unchecked.
+
+Click OK.
+
+You're done! Your customized date/time widget is now live on your stream.
 
 **To Reset to Defaults:**
 In the settings panel, click the "Reset to Defaults" button. This will revert all settings to their initial state and clear your saved preferences.
