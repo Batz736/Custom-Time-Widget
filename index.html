@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Untitled</title>
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,12 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bayon&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    </head>
+</head>
 <body>
     <div id="date-time-widget">
         <div id="date-display" class="widget-text"></div>
         <div id="time-display" class="widget-text"></div>
-        <button id="settings-button" class="widget-button">⚙️ Settings</button>
+        <a id="settings-button" class="widget-button" href="javascript:void(0);">⚙️ Settings</a>
     </div>
 
     <div id="settings-overlay" class="hidden">
@@ -36,7 +26,8 @@
                 <select id="font-family">
                     <option value="Arial, sans-serif">Arial</option>
                     <option value="Arial Black, sans-serif">Arial Black</option>
-                    <option value="Arial Bold, sans-serif">Arial Bold</option> <option value="Franklin Gothic Medium, sans-serif">Franklin Gothic</option>
+                    <option value="Arial Bold, sans-serif">Arial Bold</option>
+                    <option value="Franklin Gothic Medium, sans-serif">Franklin Gothic</option>
                     <option value="Showcard Gothic, cursive">Showcard Gothic</option>
                     <option value="Bayon, sans-serif">Bayon (Web Font)</option>
                     <option value="Montserrat, sans-serif">Montserrat (Web Font)</option>
@@ -53,7 +44,7 @@
                     <option value="Lucida Console, monospace">Lucida Console</option>
                     <option value="Impact, sans-serif">Impact</option>
                     <option value="Comic Sans MS, cursive">Comic Sans MS</option>
-                    </select>
+                </select>
 
                 <label for="font-size">Font Size (px):</label>
                 <input type="number" id="font-size" min="10" max="200" value="48">
@@ -89,14 +80,17 @@
                 <button id="close-settings" class="widget-button">Close</button>
                 <button id="reset-settings" class="widget-button">Reset to Defaults</button>
             </div>
+
+            <div class="shareable-link-section">
+                <h3>Shareable Link (Updates on Save)</h3>
+                <input type="text" id="shareable-link-display" readonly>
+                <button id="copy-link-button" class="widget-button">Copy Link</button>
+                <small>Save settings first to get your unique link.</small>
+            </div>
+
         </div>
     </div>
 
     <script src="script.js"></script>
-</body>
-</html>
-<!-- partial -->
-  <script  src="./script.js"></script>
-
 </body>
 </html>
