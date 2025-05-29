@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgOpacityInput = document.getElementById('bg-opacity');
     const timezoneSelect = document.getElementById('timezone-select');
 
-    // REMOVED: shareableLinkDisplay and copyLinkButton variables
+    // REMOVED: shareableLinkDisplay and copyLinkButton variables are no longer needed
 
     // Default settings
     const defaultSettings = {
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         currentSettings = { ...defaultSettings, ...loadedSettings };
         applySettings(currentSettings);
-        // REMOVED: shareableLinkDisplay.value update here
+        // REMOVED: shareableLinkDisplay.value update logic
     }
 
     // Modified: Function to save settings to localStorage AND update URL
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // It only works on URLs with a valid origin (not file://).
         history.pushState(currentSettings, '', newUrl);
 
-        // REMOVED: shareableLinkDisplay.value update here
+        // REMOVED: shareableLinkDisplay.value update logic
         applySettings(currentSettings); // Re-apply to ensure immediate visual update
     }
 
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bgColorInput.value = defaultSettings.bgColor;
             bgOpacityInput.value = defaultSettings.bgOpacity;
             timezoneSelect.value = defaultSettings.timeZone;
-            // REMOVED: shareableLinkDisplay.value update here
+            // REMOVED: shareableLinkDisplay.value update logic
         }
     }
 
@@ -244,10 +244,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners ---
 
+    // Using optional chaining (?) in case the element isn't found (though it should be)
     settingsButton?.addEventListener('click', (event) => {
         event.preventDefault(); // Prevent default <a> tag navigation
         applySettings(currentSettings); // Load current settings into panel fields
-        // REMOVED: shareableLinkDisplay.value update here
+        // REMOVED: shareableLinkDisplay.value update logic
         settingsOverlay.classList.remove('hidden');
     });
 
@@ -262,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     resetSettingsButton?.addEventListener('click', resetToDefaults);
 
-    // REMOVED: copyLinkButton event listener
+    // REMOVED: copyLinkButton event listener is no longer needed
 
     // --- Initialization ---
 
