@@ -8,7 +8,7 @@ This widget is designed for easy integration into your streaming setup without n
 
 **Your Widget's Public Browser Link:**
 
-`https://batz736.github.io/Custom-Time-Widget/widget.html`*(https://batz736.github.io/Custom-Time-Widget/widget.html)*
+`https://batz736.github.io/Custom-Time-Widget/`*(https://batz736.github.io/Custom-Time-Widget/*
 
 ---
 
@@ -38,7 +38,7 @@ Follow these steps to integrate the widget into your streaming setup:
 5.  In the properties window that appears:
     * **Crucially:** Ensure the **"Local file"** checkbox is **UNCHECKED**.
     * In the **"URL"** field, paste the public browser link for your widget:
-        `(https://batz736.github.io/Custom-Time-Widget/widget.html)`
+        `(https://batz736.github.io/Custom-Time-Widget)`
     * Set the **Width** and **Height** of the Browser Source. A good starting point is `400` for Width and `150` for Height, but you can adjust this to fit your stream layout.
     * *(Optional but Recommended):* Check "Shutdown source when not active" and "Refresh browser when scene becomes active" for optimal performance.
     * Click "OK".
